@@ -3,8 +3,8 @@ package collectors
 import "fmt"
 import "regexp"
 import "github.com/c9s/goprocinfo/linux"
-import "github.com/josegonzalez/metricsd/mappings"
-import "github.com/josegonzalez/metricsd/structs"
+import "github.com/mike-a-davis/metricsd/mappings"
+import "github.com/mike-a-davis/metricsd/structs"
 import "github.com/Sirupsen/logrus"
 import "github.com/vaughan0/go-ini"
 
@@ -32,9 +32,10 @@ func (c *IostatCollector) Report() (structs.MetricSlice, error) {
 		for device, values := range data {
 			for k, v := range values {
 				metric := structs.BuildMetric("IostatCollector", "iostat", "gauge", k, v, structs.FieldsMap{
-					"device":    device,
-					"raw_key":   k,
-					"raw_value": v,
+					"device": device,
+					"unit":   "IO",
+					"name":   k,
+					// "raw_value": v,
 				})
 				metric.Path = fmt.Sprintf("iostat.%s", device)
 				report = append(report, metric)

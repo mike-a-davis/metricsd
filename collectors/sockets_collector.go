@@ -2,8 +2,8 @@ package collectors
 
 import "strings"
 import "github.com/c9s/goprocinfo/linux"
-import "github.com/josegonzalez/metricsd/mappings"
-import "github.com/josegonzalez/metricsd/structs"
+import "github.com/mike-a-davis/metricsd/mappings"
+import "github.com/mike-a-davis/metricsd/structs"
 import "github.com/Sirupsen/logrus"
 import "github.com/vaughan0/go-ini"
 
@@ -30,9 +30,9 @@ func (c *SocketsCollector) Report() (structs.MetricSlice, error) {
 	if values != nil {
 		for k, v := range values {
 			fieldsMap := structs.FieldsMap{
-				"unit":      "Sock",
-				"raw_key":   k,
-				"raw_value": v,
+				"unit": "Sock",
+				"name": k,
+				// "raw_value": v,
 			}
 
 			splitted := strings.Split(k, "_")

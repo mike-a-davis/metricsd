@@ -8,18 +8,19 @@ import "github.com/Sirupsen/logrus"
 import "github.com/vaughan0/go-ini"
 
 type Metric struct {
-	Collector  string
-	Path       string
-	From       string
-	Name       string
-	Value      interface{}
-	RawValue   interface{}
+	Collector string
+	Path      string
+	From      string
+	Name      string
+	Value     interface{}
+	// RawValue   interface{}
 	Timestamp  time.Time
 	Precision  int
 	Host       string
 	MetricType string
 	TTL        int
 	Data       FieldsMap
+	Tags       FieldsMap
 }
 
 var Hostname string
@@ -40,13 +41,13 @@ type MetricSlice []*Metric
 
 func BuildMetric(collector string, from string, metricType string, name string, value interface{}, data FieldsMap) *Metric {
 	return &Metric{
+		Timestamp:  time.Now(),
+		Value:      value,
+		MetricType: metricType,
+		Host:       Hostname,
 		Collector:  collector,
 		From:       from,
 		Name:       name,
-		Value:      value,
-		MetricType: metricType,
-		Timestamp:  time.Now(),
-		Host:       Hostname,
 		Precision:  0,
 		TTL:        0,
 		Data:       data,
@@ -65,38 +66,47 @@ func (m *Metric) Process(conf ini.File) {
 
 func (m *Metric) ToMap() map[string]interface{} {
 	data := make(map[string]interface{})
-	data["@timestamp"] = m.Timestamp.Format("2006-01-02T15:04:05.000Z")
-	data["@version"] = "1"
-	data["collector"] = m.From
-	data["type"] = m.Name
-	data["result"] = m.Value
+	tags := make(map[string]interface{})
+
+	mlxName := m.Data["name"]
+	mlxCollector := m.From
+	data["timestamp"] = int32(m.Timestamp.Unix())
+	data["unit"] = m.Data["unit"]
+	data["name"] = fmt.Sprintf("%s.%s", mlxCollector, mlxName)
 	data["target_type"] = m.MetricType
 
-	for k, v := range m.Data {
-		_, exists := data[k]
-		if exists {
-			data[fmt.Sprintf("fields.%s", k)] = v
-		} else {
-			data[k] = v
-		}
-	}
-
+	data["result"] = m.Value
 	if _, ok := data["host"]; !ok {
 		data["host"] = m.Host
 	}
 
+	tags["version"] = "1"
+	// tags["collector"] = m.From
+	// tags["type"] = m.Name
+
+	for k, v := range m.Data {
+		_, exists := data[k]
+		if exists {
+			// data[fmt.Sprintf("%s", k)] = v
+		} else {
+			tags[k] = v
+		}
+	}
+	// tags["raw_value"] = "true"
+
+	data["tags"] = tags
 	return data
 }
 
 func (m *Metric) ToJSON() []byte {
 	data := m.ToMap()
 
-	serialized, err := json.Marshal(data)
+	mlxMetric, err := json.Marshal(data)
 	if err != nil {
 		fmt.Errorf("Failed to marshal fields to JSON, %v", err)
 		return nil
 	}
-	return serialized
+	return mlxMetric
 }
 
 func (m *Metric) ToGraphite(prefix string) (response string) {

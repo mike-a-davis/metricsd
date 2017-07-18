@@ -2,8 +2,8 @@ package collectors
 
 import "fmt"
 import "github.com/c9s/goprocinfo/linux"
-import "github.com/josegonzalez/metricsd/mappings"
-import "github.com/josegonzalez/metricsd/structs"
+import "github.com/mike-a-davis/metricsd/mappings"
+import "github.com/mike-a-davis/metricsd/structs"
 import "github.com/Sirupsen/logrus"
 import "github.com/vaughan0/go-ini"
 
@@ -30,11 +30,11 @@ func (c *CpuCollector) Report() (structs.MetricSlice, error) {
 	if data != nil {
 		for cpu, values := range data {
 			for k, v := range values {
-				metric := structs.BuildMetric("CpuCollector", "cpu", "gauge_pct", k, v, structs.FieldsMap{
-					"core":      cpu,
-					"unit":      "Jiff",
-					"raw_key":   k,
-					"raw_value": v,
+				metric := structs.BuildMetric("CpuCollector", "cpu", "gauge", k, v, structs.FieldsMap{
+					"core": cpu,
+					"unit": "Jiff",
+					"name": k,
+					// "raw_value": v,
 				})
 				metric.Path = fmt.Sprintf("cpu.%s", cpu)
 				report = append(report, metric)

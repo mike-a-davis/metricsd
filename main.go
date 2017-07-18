@@ -6,10 +6,10 @@ import "strconv"
 import "strings"
 import "sync"
 import "time"
-import "github.com/josegonzalez/metricsd/collectors"
-import "github.com/josegonzalez/metricsd/config"
-import "github.com/josegonzalez/metricsd/shippers"
-import "github.com/josegonzalez/metricsd/structs"
+import "github.com/mike-a-davis/metricsd/collectors"
+import "github.com/mike-a-davis/metricsd/config"
+import "github.com/mike-a-davis/metricsd/shippers"
+import "github.com/mike-a-davis/metricsd/structs"
 import "github.com/Sirupsen/logrus"
 import "github.com/vaughan0/go-ini"
 
@@ -147,6 +147,7 @@ func getShippers() []shippers.ShipperInterface {
 	shipperList = append(shipperList, &shippers.LogstashElasticsearchShipper{})
 	shipperList = append(shipperList, &shippers.StdoutShipper{})
 	shipperList = append(shipperList, &shippers.LogstashRedisShipper{})
+	shipperList = append(shipperList, &shippers.MlxShipper{})
 
 	for _, shipper := range shipperList {
 		collectorName := strings.Split(reflect.TypeOf(shipper).String(), ".")[1]

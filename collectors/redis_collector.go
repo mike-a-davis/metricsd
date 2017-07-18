@@ -1,13 +1,16 @@
 package collectors
 
-import "fmt"
-import "regexp"
-import "strings"
-import "github.com/josegonzalez/go-radixurl"
-import "github.com/josegonzalez/metricsd/mappings"
-import "github.com/josegonzalez/metricsd/structs"
-import "github.com/josegonzalez/metricsd/utils"
-import "github.com/vaughan0/go-ini"
+import (
+	"fmt"
+	"regexp"
+	"strings"
+
+	radixurl "github.com/mike-a-davis/go-radixurl"
+	"github.com/mike-a-davis/metricsd/mappings"
+	"github.com/mike-a-davis/metricsd/structs"
+	"github.com/mike-a-davis/metricsd/utils"
+	"github.com/vaughan0/go-ini"
+)
 
 type RedisCollector struct {
 	enabled bool

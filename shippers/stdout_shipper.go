@@ -1,7 +1,7 @@
 package shippers
 
 import "fmt"
-import "github.com/josegonzalez/metricsd/structs"
+import "github.com/mike-a-davis/metricsd/structs"
 import "github.com/vaughan0/go-ini"
 
 // StdoutShipper is an exported type that

@@ -11,7 +11,7 @@ import "io/ioutil"
 import "net/http"
 import "strings"
 import "github.com/Sirupsen/logrus"
-import "github.com/josegonzalez/metricsd/structs"
+import "github.com/mike-a-davis/metricsd/structs"
 import "github.com/vaughan0/go-ini"
 
 // ElasticsearchCollector is an exported type that
@@ -272,6 +272,7 @@ func collectInstanceClusterStats(instance string, report structs.MetricSlice) st
 			continue
 		}
 		metric := structs.BuildMetric("ElasticsearchCollector", "elasticsearch", "gauge", name, value, structs.FieldsMap{
+			"unit":      "ES",
 			"raw_key":   key,
 			"raw_value": value,
 		})

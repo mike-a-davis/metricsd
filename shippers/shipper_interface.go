@@ -1,6 +1,6 @@
 package shippers
 
-import "github.com/josegonzalez/metricsd/structs"
+import "github.com/mike-a-davis/metricsd/structs"
 import "github.com/vaughan0/go-ini"
 
 // ShipperInterface is an exported type that

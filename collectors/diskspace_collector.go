@@ -7,8 +7,8 @@ import "strconv"
 import "strings"
 import "syscall"
 import "github.com/c9s/goprocinfo/linux"
-import "github.com/josegonzalez/metricsd/mappings"
-import "github.com/josegonzalez/metricsd/structs"
+import "github.com/mike-a-davis/metricsd/mappings"
+import "github.com/mike-a-davis/metricsd/structs"
 import "github.com/Sirupsen/logrus"
 import "github.com/vaughan0/go-ini"
 
@@ -60,8 +60,8 @@ func (c *DiskspaceCollector) Report() (structs.MetricSlice, error) {
 				metric := structs.BuildMetric("DiskspaceCollector", "diskspace", "gauge", mtype, v, structs.FieldsMap{
 					"mountpoint": mountpoint,
 					"unit":       units[unit],
-					"raw_key":    k,
-					"raw_value":  v,
+					"name":       k,
+					// "raw_value":  v,
 				})
 				metric.Path = fmt.Sprintf("diskspace.%s", mountpoint)
 				report = append(report, metric)

@@ -1,8 +1,8 @@
 package collectors
 
 import "github.com/c9s/goprocinfo/linux"
-import "github.com/josegonzalez/metricsd/mappings"
-import "github.com/josegonzalez/metricsd/structs"
+import "github.com/mike-a-davis/metricsd/mappings"
+import "github.com/mike-a-davis/metricsd/structs"
 import "github.com/Sirupsen/logrus"
 import "github.com/vaughan0/go-ini"
 
@@ -29,9 +29,9 @@ func (c *VmstatCollector) Report() (structs.MetricSlice, error) {
 	if values != nil {
 		for k, v := range values {
 			metric := structs.BuildMetric("VmstatCollector", "vmstat", "rate", k, v, structs.FieldsMap{
-				"unit":      "Page",
-				"raw_key":   k,
-				"raw_value": v,
+				"unit": "Page",
+				"name": k,
+				// "raw_value": v,
 			})
 			report = append(report, metric)
 		}
